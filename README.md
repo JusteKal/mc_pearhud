@@ -1,129 +1,128 @@
 # Pear HUD ⭐
 
-Affiche la musique en cours de lecture sur **Pear Desktop** dans le HUD de Minecraft. Une petite interface rouge élégante avec l'artwork de la pochette, le titre, l'artiste, le temps et une barre de progression.
+Displays the current music track from **Pear Desktop** in Minecraft's HUD. An elegant small red interface with album art, song title, artist, playback time, and progress bar.
 
 <img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/e93583b7-c547-42f0-9d0a-6efc877d85af" />
 
+---
+
+## 📦 Mod Information
+
+| Property       | Value                               |
+|----------------|--------------------------------------|
+| **Mod ID**     | `pearhud`                            |
+| **Version**    | 1.0.0 (Minecraft 26.3)              |
+| **Authors**    | JusteKal                             |
+| **License**    | [MIT](LICENSE)                        |
+| **Launch**     | Java 25+ with Fabric API             |
 
 ---
 
-## 📦 Informations du mod
+## 🎯 Features
 
-| Propriété        | Valeur                               |
-|------------------|--------------------------------------|
-| **Mod ID**       | `pearhud`                            |
-| **Version**      | 1.0.0 (Minecraft 26.3)              |
-| **Auteurs**      | JusteKal                             |
-| **Licence**      | [MIT](LICENSE)                        |
-| **Lancement**    | Java 25+ avec Fabric API             |
-
----
-
-## 🎯 Fonctionnalités
-
-- ✅ Affichage du titre, de l'artiste et du temps de lecture en cours
-- ✅ Barre de progression visuelle
-- ✅ Pochette album (cover art) dynamique
-- ✅ Indicateur d'état (connexion, song, pause, offline)
-- ✅ Configuration personnalisable dans `.minecraft/config/pearhud.json`
+- ✅ Display current song title, artist and playback time
+- ✅ Visual progress bar
+- ✅ Dynamic album art (cover)
+- ✅ Connection status indicator (connect, song, pause, offline)
+- ✅ Fully configurable via `.minecraft/config/pearhud.json`
 
 ---
 
 ## 🚀 Installation
 
-### 1️⃣ Prérequis
+### 1️⃣ Prerequisites
 
-- **Minecraft 26.3** ou version compatible
+- **Minecraft 26.3** or compatible version
 - **Fabric Loader >= 0.19.5**
-- **Java 25+** requis pour la compilation
+- **Java 25+** required for compilation
 
-### 2️⃣ Installer Pear Desktop (API Server)
+### 2️⃣ Install Pear Desktop (API Server)
 
-Ce mod est incompatible sans Pear Desktop ! Assurez-vous d'avoir :
+This mod requires Pear Desktop ! Make sure to have:
 
-1. Installé [Pear Desktop](https://pear-desktop.org/) (v3.12.0+)
-2. Activé le plugin **API Server** dans Pear Desktop  
-   - Paramètres > Plugins > API Server > ✅ Activer  
-   - Port par défaut : `26538` (HTTP)
+1. Installed [Pear Desktop](https://pear-desktop.org/) (v3.12.0+)
+2. Enabled the **API Server** plugin in Pear Desktop 
+   - Settings > Plugins > API Server > ✅ Enable  
+   - Default port: `26538` (HTTP)
 
-### 3️⃣ Autoriser l'accès
+### 3️⃣ Authorize Access
 
-1. Lancez Minecraft avec Pear Desktop
-2. Une popup de Pear vous demandera d'autoriser *"minecraft-pear-hud"*
-3. Cliquez sur **Autoriser** → le token d'authentification sera stocké automatiquement
+1. Launch Minecraft with Pear Desktop
+2. A Pear popup will ask you to authorize *"minecraft-pear-hud"*
+3. Click **Authorize** → the authentication token will be stored automatically
 
 ---
 
 ## 🛠️ Build & Compilation
 
-### Compiler le mod
+### Compile the mod
 
 ```bash
 ./gradlew build
 ```
 
-> ⚠️ Nécessite un JDK 25 ou supérieur
+> ⚠️ Requires JDK 25 or above
 
-Le fichier jar sera généré dans : `build/libs/`
+The jar file will be generated in: `build/libs/
 
-### Copier le mod dans Minecraft
+### Copy the mod into Minecraft
 
-1. Placez le jar produit dans votre dossier `mods/` (`.minecraft/mods/`)
-2. Assurez-vous de lancer Minecraft avec le correct version des dépendances Fabric API
+1. Place the generated jar in your `mods/` folder (`.minecraft/mods/`)
+2. Ensure you launch Minecraft with the correct Fabric API version
 
 ---
 
 ## ⚙️ Configuration
 
-Le fichier de configuration se trouve à `.minecraft/config/pearhud.json`. Voici les options disponibles :
+The configuration file is located at `.minecraft/config/pearhud.json`. Here are the available options:
 
 ```json
 {
-  "enabled": true,                    // Activer/Désactiver le mod
-  "host": "127.0.0.1",               // Serveur Pear Desktop
-  "port": 26538,                     // Port API Server (HTTP)
-  "authId": "minecraft-pear-hud",    // ID d'authentification
-  "accessToken": "",                  // Token (rempli automatiquement au premier lancement)
-  "x": 6,                            // Position X du HUD (pixels depuis la gauche)
-  "y": 6,                            // Position Y du HUD (pixels depuis le haut)
-  "width": 190                       // Largeur totale de l'interface
+  "enabled": true,                    // Enable/Disable the mod
+  "host": "127.0.0.1",               // Pear Desktop Server
+  "port": 26538,                     // API Server Port (HTTP)
+  "authId": "minecraft-pear-hud",    // Authentication ID
+  "accessToken": "",                  // Token (filled automatically on first launch)
+  "x": 6,                            // HUD X position (pixels from left)
+  "y": 6,                            // HUD Y position (pixels from top)
+  "width": 190                       // Total interface width
 }
 ```
 
-### États d'affichage
+### Display States
 
-- **Connexion...** — Seconde après connexion à Pear Desktop
-- **Autorise l'accès dans Pear** — Attente des permissions
-- **Accès refusé (nouvel essai 30s)** — Le token a expiré, réessayer
-- **Pear injoignable (API Server ?)** — Impossible de contacter Pear
-- **Aucune musique** — Aucun titre disponible actuellement
+- **Connecting...** — Second after connecting to Pear Desktop
+- **Authorize access in Pear** — Waiting for permissions
+- **Access Denied (retry in 30s)** — Token expired, retry
+- **Pear Unreachable (API Server?)** — Cannot contact Pear
+- **No Song** — No track currently available
 
 ---
 
-## 📁 Structure du projet
+## 📁 Project Structure
 
 ```
 mc_pearhud/
 ├── src/main/java/be/justekal/pearhud/
-│   ├── PearHudClient.java    # Initialisation & HUD de Minecraft
-│   ├── PearApi.java          # Client HTTP pour API Server Pear
-│   └── PearConfig.java       # Gestion des config (.minecraft/config/)
+│   ├── PearHudClient.java    # Minecraft mod initialization & HUD
+│   ├── PearApi.java          # HTTP Client for Pear API Server
+│   └── PearConfig.java       # Configuration manager (.minecraft/config/)
 ├── src/main/resources/
-│   └── fabric.mod.json       # Metadata du mod Fabric
-├── build.gradle               # Configuration Gradle
-├── gradle.properties         # Versions & paramètres
+│   └── fabric.mod.json       # Fabric mod metadata
+├── build.gradle               # Gradle configuration
+├── gradle.properties         # Versions & parameters
 └── LICENSE
 ```
 
-### Dépendances principales
+### Key Dependencies
 
 - **Fabric API** : `0.161.0+26.3`
 - **Minecraft** : `26.3`
-- **Java** : `>= 25` (nécessaire pour compilation)
+- **Java** : `>= 25` (required for compilation)
 
 ---
 
-## 📊 Flux de travail
+## 📊 Workflow
 
 ```mermaid
 sequenceDiagram
@@ -132,38 +131,38 @@ sequenceDiagram
     participant PearHudClient as Mod Client
     Participant Config as Configuration
 
-    Note over Minecraft,PearHudClient: Lancement du mod
-    
+    Note over Minecraft,PearHudClient: Mod Launch
+
     Minecraft->>PearHudClient: onInitializeClient()
-    PearHudClient->>Config: load config
+    PearHudClient->>Config: Load configuration
     PearHudClient->>PearApi: start()
-    
-    PearHudClient->>PearApi: tick() (chaque seconde)
+
+    PearHudClient->>PearApi: tick() (every second)
     PearApi-->>PearHudClient: Song data
-    
-    Note over Minecraft,PearHudClient: Afficher dans le HUD
+
+    Note over Minecraft,PearHudClient: Display in HUD
 ```
 
 ---
 
-## 🤝 Contributeurs
+## 🤝 Contributors
 
-- **JusteKal** — Créateur et développeur principal
-
----
-
-## ⚖️ Licence
-
-Distribué sous la [Licence MIT](LICENSE). Voir [LICENSE](LICENSE) pour les détails complets.
+- **JusteKal** — Creator and main developer
 
 ---
 
-## 📚 Ressources externes
+## ⚖️ License
 
-- [Pear Desktop](https://peardesktop.com) — Le serveur de musique
-- [Fabric Modding Wiki](https://fabricmc.net/wiki/) — Documentation officielle
-- [Minecraft 26.3 (Development)](https://fabricmc.net/develop) — Pré-release Minecraft
+Distributed under the [MIT License](LICENSE). See [LICENSE](LICENSE) for full details.
 
 ---
 
-**Projet sous licence MIT © 2026 JusteKal**
+## 📚 External Resources
+
+- [Pear Desktop](https://pear-desktop.org/) — Music server software
+- [Fabric Modding Wiki](https://fabricmc.net/wiki/) — Official documentation
+- [Minecraft 26.3 (Development)](https://fabricmc.net/develop) — Minecraft pre-release
+
+---
+
+**Licensed under MIT © 2026 JusteKal**
