@@ -160,7 +160,7 @@ Distribué sous la [Licence MIT](LICENSE). Voir [LICENSE](LICENSE) pour les dét
 
 ## 📚 Ressources externes
 
-- [Pear Desktop](https://pear-desktop.org/) — Le serveur de musique
+- [Pear Desktop](https://peardesktop.com) — Le serveur de musique
 - [Fabric Modding Wiki](https://fabricmc.net/wiki/) — Documentation officielle
 - [Minecraft 26.3 (Development)](https://fabricmc.net/develop) — Pré-release Minecraft
 
