@@ -2,8 +2,8 @@
 
 Affiche la musique en cours de lecture sur **Pear Desktop** dans le HUD de Minecraft. Une petite interface rouge élégante avec l'artwork de la pochette, le titre, l'artiste, le temps et une barre de progression.
 
-![Preview](https://github.com/your-username/fabric-example-mod-26.3/blob/main/screenshots/pearhud-preview.png?raw=true)  
-*(Prévisualisation - à remplacer par votre propre capture)*
+<img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/e93583b7-c547-42f0-9d0a-6efc877d85af" />
+
 
 ---
 
