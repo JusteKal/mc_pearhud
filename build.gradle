@@ -10,10 +10,32 @@ base {
     archivesName = project.archives_base_name
 }
 
+repositories {
+    maven {
+        name = 'Terraformers'
+        url = 'https://maven.terraformersmc.com/'
+    }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    // Ecran de configuration : optionnels a l'execution (voir "suggests" dans fabric.mod.json)
+    implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    implementation "maven.modrinth:yacl:${project.yacl_version}"
 }
 
 processResources {

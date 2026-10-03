@@ -57,6 +57,8 @@ public class PearHudClient implements ClientModInitializer {
     private static Field dbgField;
     private static Method dbgMethod;
 
+    public static PearConfig config() { return config; }
+
     @Override
     public void onInitializeClient() {
         config = PearConfig.load();

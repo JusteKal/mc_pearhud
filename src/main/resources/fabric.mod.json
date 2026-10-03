@@ -5,14 +5,25 @@
   "name": "Pear HUD",
   "description": "Affiche la musique en cours de Pear Desktop dans le HUD de Minecraft.",
   "authors": ["JusteKal"],
+  "contact": {
+    "homepage": "https://github.com/JusteKal/mc_pearhud",
+    "sources": "https://github.com/JusteKal/mc_pearhud",
+    "issues": "https://github.com/JusteKal/mc_pearhud/issues"
+  },
   "license": "MIT",
+  "icon": "assets/pearhud/icon.png",
   "environment": "client",
   "entrypoints": {
-    "client": ["be.justekal.pearhud.PearHudClient"]
+    "client": ["be.justekal.pearhud.PearHudClient"],
+    "modmenu": ["be.justekal.pearhud.PearModMenu"]
   },
   "depends": {
     "fabricloader": ">=0.19.5",
     "fabric-api": "*",
     "java": ">=25"
+  },
+  "suggests": {
+    "modmenu": "*",
+    "yet_another_config_lib_v3": "*"
   }
 }

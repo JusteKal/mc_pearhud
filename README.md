@@ -29,7 +29,8 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 - ✅ **Configurable key** in *Options > Controls > Pear HUD* (default: `H`)
 - ✅ **Hidden while the F3 debug screen is open**
 - ✅ Connection status indicator (connecting, authorization, offline, no song)
-- ✅ Fully configurable via `.minecraft/config/pearhud.json`
+- ✅ **In-game config screen** through [Mod Menu](https://github.com/TerraformersMC/ModMenu) (position, docking, scroll speed, connection...)
+- ✅ Also configurable by hand via `.minecraft/config/pearhud.json`
 
 ---
 
@@ -41,12 +42,13 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 - **Fabric Loader >= 0.19.5**
 - **Fabric API** (`0.161.0+26.3` or newer)
 - **Java 25+**
+- *Optional, for the in-game config screen:* [Mod Menu](https://modrinth.com/mod/modmenu) and [YetAnotherConfigLib (YACL)](https://modrinth.com/mod/yacl)
 
 ### 2️⃣ Install Pear Desktop (API Server)
 
 This mod requires Pear Desktop! Make sure to have:
 
-1. Installed [Pear Desktop](https://pear-desktop.com/) (v3.12.0+)
+1. Installed [Pear Desktop](https://pear-desktop.org/) (v3.12.0+)
 2. Enabled the **API Server** plugin in Pear Desktop
    - Settings > Plugins > API Server > ✅ Enable
    - Default port: `26538` (HTTP, leave HTTPS disabled)
@@ -86,6 +88,22 @@ Other behaviors:
 ---
 
 ## ⚙️ Configuration
+
+### In game (Mod Menu)
+
+Install **Mod Menu** and **YACL**, then open *Mods > Pear HUD > Configure* (the gear button). The screen has five tabs:
+
+| Tab | Options |
+|-----|---------|
+| **General** | Enable the HUD, hide it with F3 |
+| **Docking** | Auto-hide on the side, display time, dock on the right side |
+| **Position** | Side margin, top margin, width |
+| **Text** | Scroll speed of long titles and artists |
+| **Connection** | Pear address and port |
+
+Changes are applied as soon as you click **Save**, no restart needed. Each option has a reset button. Without YACL the config button simply doesn't appear, and the mod keeps working with the file below.
+
+### Configuration file
 
 The configuration file is located at `.minecraft/config/pearhud.json`. It is created on first launch, and new options are added automatically when you update the mod. Close Minecraft before editing it by hand.
 
@@ -142,6 +160,7 @@ While the HUD is tucked away you won't see these states: press the key to bring 
 | "Pear Unreachable" | Pear Desktop is running, the **API Server** plugin is enabled, port is `26538`, HTTPS is off. Test with `Invoke-RestMethod http://127.0.0.1:26538/api/v1/song` in PowerShell |
 | The HUD never shows up | Press the key (default `H`). If it is shown in red in *Controls*, another mod uses the same key: rebind one of them. Or set `autoHide` to `false` |
 | The HUD still shows with F3 | Look for `Detection de l'ecran F3` in `logs/latest.log`: the F3 detection could not hook into this Minecraft version, the rest of the mod still works |
+| No config button in Mod Menu | Install **YACL** (YetAnotherConfigLib) for 26.3 next to Mod Menu. Without it the mod still works, edit `pearhud.json` instead |
 | No album cover | The cover is downloaded in the background, it can take a moment. Check `latest.log` for `Pochette illisible` |
 | Game crashes at startup with `ClassNotFoundException` | An old jar of the mod is still in `mods/`. Keep only one `pearhud` jar |
 
@@ -174,12 +193,14 @@ mc_pearhud/
 ├── src/main/java/be/justekal/pearhud/
 │   ├── PearHudClient.java    # Mod initialization, key binding, HUD rendering & animations
 │   ├── PearApi.java          # HTTP client for the Pear API Server (song + cover)
-│   └── PearConfig.java       # Configuration manager (.minecraft/config/)
+│   ├── PearConfig.java       # Configuration manager (.minecraft/config/)
+│   ├── PearModMenu.java      # Mod Menu entrypoint (adds the config button)
+│   └── PearConfigScreen.java # In-game config screen (YACL), the only class that uses it
 ├── src/main/resources/
 │   ├── fabric.mod.json       # Fabric mod metadata
 │   └── assets/pearhud/
 │       ├── icon.png          # Mod icon
-│       └── lang/             # Key binding translations (en_us, fr_fr)
+│       └── lang/             # Translations: key binding, config screen, Mod Menu (en_us, fr_fr)
 ├── build.gradle              # Gradle configuration
 ├── gradle.properties         # Versions & parameters
 └── LICENSE
@@ -190,6 +211,7 @@ mc_pearhud/
 - **Fabric API** : `0.161.0+26.3`
 - **Minecraft** : `26.3`
 - **Java** : `>= 25` (required for compilation and at runtime)
+- **Mod Menu** : `21.0.0` and **YACL** : `3.9.7+26.3-fabric` (compile-time, optional at runtime)
 
 ---
 
@@ -226,7 +248,7 @@ sequenceDiagram
 
 ## 🗺️ Roadmap
 
-- Config screen with Mod Menu (styles, themes, position)
+- More display styles and color themes (compact, minimal, custom accent color)
 - Keys to control playback (play/pause, next, previous)
 - Synchronized lyrics, if the Pear API exposes them
 
