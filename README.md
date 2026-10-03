@@ -46,7 +46,7 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 
 This mod requires Pear Desktop! Make sure to have:
 
-1. Installed [Pear Desktop](https://pear-desktop.org/) (v3.12.0+)
+1. Installed [Pear Desktop](https://pear-desktop.com/) (v3.12.0+)
 2. Enabled the **API Server** plugin in Pear Desktop
    - Settings > Plugins > API Server > ✅ Enable
    - Default port: `26538` (HTTP, leave HTTPS disabled)
