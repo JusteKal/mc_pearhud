@@ -15,6 +15,7 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 | **Authors**    | JusteKal                             |
 | **License**    | [MIT](LICENSE)                       |
 | **Launch**     | Java 25+ with Fabric API             |
+| **Optional**   | Mod Menu + YACL (in-game config screen) |
 
 ---
 
@@ -30,6 +31,8 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 - ✅ **Hidden while the F3 debug screen is open**
 - ✅ Connection status indicator (connecting, authorization, offline, no song)
 - ✅ **In-game config screen** through [Mod Menu](https://github.com/TerraformersMC/ModMenu) (position, docking, scroll speed, connection...)
+- ✅ Listed in Mod Menu with its icon, a description and links to the sources and issue tracker
+- ✅ Translated in **English and French** (config screen, key binding, Mod Menu description)
 - ✅ Also configurable by hand via `.minecraft/config/pearhud.json`
 
 ---
@@ -62,7 +65,7 @@ Depending on the **Authorization strategy** of the API Server plugin:
 
 ### 4️⃣ Install the mod
 
-Place the jar in your `mods/` folder (`.minecraft/mods/`) next to Fabric API.
+Place the jar in your `mods/` folder (`.minecraft/mods/`) next to Fabric API. Add Mod Menu and YACL as well if you want the in-game config screen.
 
 ---
 
@@ -93,13 +96,13 @@ Other behaviors:
 
 Install **Mod Menu** and **YACL**, then open *Mods > Pear HUD > Configure* (the gear button). The screen has five tabs:
 
-| Tab | Options |
+| Tab | Options (file key) |
 |-----|---------|
-| **General** | Enable the HUD, hide it with F3 |
-| **Docking** | Auto-hide on the side, display time, dock on the right side |
-| **Position** | Side margin, top margin, width |
-| **Text** | Scroll speed of long titles and artists |
-| **Connection** | Pear address and port |
+| **General** | Show the HUD (`enabled`), hide with F3 (`hideInDebug`) |
+| **Docking** | Auto-hide on the side (`autoHide`), display time in seconds (`displaySeconds`), dock on the right side (`side`) |
+| **Position** | Side margin (`x`), top margin (`y`), width (`width`) |
+| **Text** | Scroll speed of long titles and artists (`scrollSpeed`) |
+| **Connection** | Pear address (`host`) and port (`port`) |
 
 Changes are applied as soon as you click **Save**, no restart needed. Each option has a reset button. Without YACL the config button simply doesn't appear, and the mod keeps working with the file below.
 
