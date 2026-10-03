@@ -30,5 +30,22 @@
   "config.pearhud.host": "Pear address",
   "config.pearhud.host.desc": "Address of the Pear Desktop API Server plugin (127.0.0.1 = this computer).",
   "config.pearhud.port": "Port",
-  "config.pearhud.port.desc": "Port of the API Server plugin (26538 by default, HTTP)."
+  "config.pearhud.port.desc": "Port of the API Server plugin (26538 by default, HTTP).",
+  "config.pearhud.category.appearance": "Appearance",
+  "config.pearhud.style": "Display style",
+  "config.pearhud.style.desc": "Full: cover, title, artist, time and progress bar. Compact: a single line. Minimal: text only, no background.\n\nA live preview of the HUD is shown below.",
+  "config.pearhud.style.FULL": "Full",
+  "config.pearhud.style.COMPACT": "Compact",
+  "config.pearhud.style.MINIMAL": "Minimal",
+  "config.pearhud.theme": "Color theme",
+  "config.pearhud.theme.desc": "Colors of the HUD. With the Custom theme, the accent color below is used. In the Minimal style only the accent color applies.\n\nA live preview of the HUD is shown below.",
+  "config.pearhud.theme.DARK": "Dark",
+  "config.pearhud.theme.LIGHT": "Light",
+  "config.pearhud.theme.PEAR": "Pear",
+  "config.pearhud.theme.OCEAN": "Ocean",
+  "config.pearhud.theme.CUSTOM": "Custom",
+  "config.pearhud.accentColor": "Accent color (Custom theme)",
+  "config.pearhud.accentColor.desc": "Color of the side stripe, the progress bar and the cover placeholder. Only used with the Custom theme.\n\nA live preview of the HUD is shown below.",
+  "config.pearhud.opacity": "Background opacity",
+  "config.pearhud.opacity.desc": "Transparency of the HUD background, in percent.\n\nA live preview of the HUD is shown below."
 }

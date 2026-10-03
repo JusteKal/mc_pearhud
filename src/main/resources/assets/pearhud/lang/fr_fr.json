@@ -30,5 +30,22 @@
   "config.pearhud.host": "Adresse de Pear",
   "config.pearhud.host.desc": "Adresse du plugin API Server de Pear Desktop (127.0.0.1 = cet ordinateur).",
   "config.pearhud.port": "Port",
-  "config.pearhud.port.desc": "Port du plugin API Server (26538 par défaut, HTTP)."
+  "config.pearhud.port.desc": "Port du plugin API Server (26538 par défaut, HTTP).",
+  "config.pearhud.category.appearance": "Apparence",
+  "config.pearhud.style": "Style d'affichage",
+  "config.pearhud.style.desc": "Complet : pochette, titre, artiste, durée et barre de progression. Compact : une seule ligne. Minimal : texte seul, sans fond.\n\nUn aperçu en direct du HUD s'affiche ci-dessous.",
+  "config.pearhud.style.FULL": "Complet",
+  "config.pearhud.style.COMPACT": "Compact",
+  "config.pearhud.style.MINIMAL": "Minimal",
+  "config.pearhud.theme": "Thème de couleurs",
+  "config.pearhud.theme.desc": "Couleurs du HUD. Avec le thème Personnalisé, la couleur d'accent ci-dessous est utilisée. Dans le style Minimal, seule la couleur d'accent s'applique.\n\nUn aperçu en direct du HUD s'affiche ci-dessous.",
+  "config.pearhud.theme.DARK": "Sombre",
+  "config.pearhud.theme.LIGHT": "Clair",
+  "config.pearhud.theme.PEAR": "Poire",
+  "config.pearhud.theme.OCEAN": "Océan",
+  "config.pearhud.theme.CUSTOM": "Personnalisé",
+  "config.pearhud.accentColor": "Couleur d'accent (thème Personnalisé)",
+  "config.pearhud.accentColor.desc": "Couleur du liseré, de la barre de progression et du carré de pochette. Utilisée uniquement avec le thème Personnalisé.\n\nUn aperçu en direct du HUD s'affiche ci-dessous.",
+  "config.pearhud.opacity": "Opacité du fond",
+  "config.pearhud.opacity.desc": "Transparence du fond du HUD, en pourcentage.\n\nUn aperçu en direct du HUD s'affiche ci-dessous."
 }

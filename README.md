@@ -25,6 +25,8 @@ Displays the current music track from **Pear Desktop** in Minecraft's HUD. An el
 - ✅ Visual progress bar
 - ✅ Dynamic album art (cover)
 - ✅ **Scrolling text**: long titles and artists scroll instead of being cut with "..."
+- ✅ **3 display styles** (Full, Compact, Minimal) and **5 color themes** (Dark, Light, Pear, Ocean, Custom accent color)
+- ✅ **Live preview** of the HUD in the config screen
 - ✅ **Auto-docking HUD**: slides off the left or right edge of the screen when idle
 - ✅ **Smart reveal**: slides back in when the song changes, when playback is paused or resumed, or when you press a key
 - ✅ **Configurable key** in *Options > Controls > Pear HUD* (default: `H`)
@@ -94,17 +96,38 @@ Other behaviors:
 
 ### In game (Mod Menu)
 
-Install **Mod Menu** and **YACL**, then open *Mods > Pear HUD > Configure* (the gear button). The screen has five tabs:
+Install **Mod Menu** and **YACL**, then open *Mods > Pear HUD > Configure* (the gear button). The screen has six tabs:
 
 | Tab | Options (file key) |
 |-----|---------|
 | **General** | Show the HUD (`enabled`), hide with F3 (`hideInDebug`) |
+| **Appearance** | Display style (`style`), color theme (`theme`), accent color (`accentColor`), background opacity (`opacity`), with a **live preview** |
 | **Docking** | Auto-hide on the side (`autoHide`), display time in seconds (`displaySeconds`), dock on the right side (`side`) |
 | **Position** | Side margin (`x`), top margin (`y`), width (`width`) |
 | **Text** | Scroll speed of long titles and artists (`scrollSpeed`) |
 | **Connection** | Pear address (`host`) and port (`port`) |
 
 Changes are applied as soon as you click **Save**, no restart needed. Each option has a reset button. Without YACL the config button simply doesn't appear, and the mod keeps working with the file below.
+
+### Display styles and themes
+
+| Style | Description |
+|-------|-------------|
+| **Full** | Album cover, title, artist, time and progress bar (default) |
+| **Compact** | A single line: small cover, scrolling title and artist, time, thin progress bar |
+| **Minimal** | Text only, no background: `> title - artist  0:42/1:33` with a thin progress bar |
+
+| Theme | Look |
+|-------|------|
+| **Dark** | Dark translucent background, red accent (default) |
+| **Light** | Light background, dark text, red accent |
+| **Pear** | Deep green background, light green accent |
+| **Ocean** | Deep blue background, blue accent |
+| **Custom** | Dark background with the accent color of your choice (`accentColor`) |
+
+The accent color is used for the side stripe, the progress bar and the cover placeholder. In the **Minimal** style there is no background, so only the accent color of the theme applies.
+
+**Live preview**: in the *Appearance* tab, hover or select any option (style, theme, accent color, opacity) and the real HUD is drawn in the description panel with a sample song, using the values you are currently editing, even before saving.
 
 ### Configuration file
 
@@ -120,6 +143,10 @@ The configuration file is located at `.minecraft/config/pearhud.json`. It is cre
   "x": 6,
   "y": 6,
   "width": 190,
+  "style": "FULL",
+  "theme": "DARK",
+  "accentColor": 14697532,
+  "opacity": 100,
   "autoHide": true,
   "displaySeconds": 5,
   "side": "LEFT",
@@ -138,6 +165,10 @@ The configuration file is located at `.minecraft/config/pearhud.json`. It is cre
 | `x` | `6` | Margin from the chosen `side`, in pixels |
 | `y` | `6` | Margin from the top of the screen, in pixels |
 | `width` | `190` | Total width of the HUD |
+| `style` | `FULL` | `FULL`, `COMPACT` or `MINIMAL` |
+| `theme` | `DARK` | `DARK`, `LIGHT`, `PEAR`, `OCEAN` or `CUSTOM` |
+| `accentColor` | `14697532` | Accent color as a decimal RGB number (`14697532` = `#E0443C`), used with the `CUSTOM` theme. Easier to set with the color picker in the config screen |
+| `opacity` | `100` | Background opacity in percent (10 to 100) |
 | `autoHide` | `true` | `true`: tuck the HUD away when idle. `false`: always visible |
 | `displaySeconds` | `5` | How long the HUD stays out after a trigger (1 to 60) |
 | `side` | `LEFT` | `LEFT` or `RIGHT`: side of the screen the HUD docks to |
@@ -164,6 +195,7 @@ While the HUD is tucked away you won't see these states: press the key to bring 
 | The HUD never shows up | Press the key (default `H`). If it is shown in red in *Controls*, another mod uses the same key: rebind one of them. Or set `autoHide` to `false` |
 | The HUD still shows with F3 | Look for `Detection de l'ecran F3` in `logs/latest.log`: the F3 detection could not hook into this Minecraft version, the rest of the mod still works |
 | No config button in Mod Menu | Install **YACL** (YetAnotherConfigLib) for 26.3 next to Mod Menu. Without it the mod still works, edit `pearhud.json` instead |
+| The preview doesn't show in the config screen | Hover or select an option of the **Appearance** tab. Make sure YACL is up to date for 26.3 |
 | No album cover | The cover is downloaded in the background, it can take a moment. Check `latest.log` for `Pochette illisible` |
 | Game crashes at startup with `ClassNotFoundException` | An old jar of the mod is still in `mods/`. Keep only one `pearhud` jar |
 
@@ -194,7 +226,8 @@ The jar file will be generated in `build/libs/` (use `pearhud-1.0.0.jar`, not th
 ```
 mc_pearhud/
 ├── src/main/java/be/justekal/pearhud/
-│   ├── PearHudClient.java    # Mod initialization, key binding, HUD rendering & animations
+│   ├── PearHudClient.java    # Mod initialization, key binding, docking animation, F3 detection
+│   ├── HudRenderer.java      # Draws the HUD (styles, themes), shared with the config preview
 │   ├── PearApi.java          # HTTP client for the Pear API Server (song + cover)
 │   ├── PearConfig.java       # Configuration manager (.minecraft/config/)
 │   ├── PearModMenu.java      # Mod Menu entrypoint (adds the config button)
@@ -251,7 +284,6 @@ sequenceDiagram
 
 ## 🗺️ Roadmap
 
-- More display styles and color themes (compact, minimal, custom accent color)
 - Keys to control playback (play/pause, next, previous)
 - Synchronized lyrics, if the Pear API exposes them
 

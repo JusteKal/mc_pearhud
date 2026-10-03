@@ -11,7 +11,6 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -26,11 +25,6 @@ public class PearHudClient implements ClientModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     private static final Identifier COVER_ID = Identifier.fromNamespaceAndPath(MOD_ID, "cover");
-    private static final int COVER = 36;        // taille affichee de la pochette (px GUI)
-    private static final int TEX = 64;          // taille de la texture
-    private static final int HEIGHT = 44;       // hauteur du HUD
-    private static final int LINE = 9;          // hauteur d'une ligne de texte
-    private static final double SCROLL_PAUSE = 1.2; // pause (s) au debut et a la fin du defilement
     private static final float SLIDE_SPEED = 4f;    // 1 / duree de l'animation (4 -> 0,25 s)
 
     private static PearConfig config;
@@ -151,84 +145,39 @@ public class PearHudClient implements ClientModInitializer {
 
         Font font = mc.font;
         int sw = mc.getWindow().getGuiScaledWidth();
-        int w = Math.max(100, config.width);
-        int h = HEIGHT;
-        boolean right = config.side == PearConfig.Side.RIGHT;
-
-        // Position : le HUD glisse hors de l'ecran, du cote choisi
-        float eased = slide * slide * (3f - 2f * slide);
-        int shift = Math.round((w + config.x + 4) * (1f - eased));
-        int x = right ? sw - w - config.x + shift : config.x - shift;
-        int y = config.y;
 
         PearApi.Song s = api.song();
         PearApi.Status st = api.status();
+        boolean playing = s != null && st == PearApi.Status.OK;
 
-        g.fill(x, y, x + w, y + h, 0x99000000);                       // fond
-        g.fill(right ? x + w - 2 : x, y, right ? x + w : x + 2, y + h, 0xFFE0443C); // liseré
+        HudRenderer.Look look = HudRenderer.Look.of(config);
+        HudRenderer.Track track = playing
+                ? new HudRenderer.Track(s.title(), s.artist(), s.paused(), s.currentElapsed(), s.duration())
+                : null;
+        String status = statusText(st);
+        HudRenderer.Size size = HudRenderer.size(font, look, track, status);
 
-        if (s == null || st != PearApi.Status.OK) {
-            g.text(font, "Pear Desktop", x + 6, y + 6, 0xFFFFFFFF, true);
-            g.text(font, fit(font, statusText(st), w - 14), x + 6, y + 18, 0xFFAAAAAA, false);
-            return;
-        }
+        // Position : le HUD glisse hors de l'ecran, du cote choisi
+        boolean right = config.side == PearConfig.Side.RIGHT;
+        float eased = slide * slide * (3f - 2f * slide);
+        int shift = Math.round((size.w() + config.x + 4) * (1f - eased));
+        int x = right ? sw - size.w() - config.x + shift : config.x - shift;
+        int y = config.y;
 
-        updateCover(mc);
-        int textX = x + 6;
-        if (hasCover) {
-            g.blit(RenderPipelines.GUI_TEXTURED, COVER_ID, x + 5, y + 4, 0, 0, COVER, COVER, TEX, TEX, TEX, TEX);
-            textX = x + 5 + COVER + 6;
-        }
-        int textW = x + w - 6 - textX;
-
-        // Titre : icone fixe + titre defilant
-        String icon = s.paused() ? "|| " : "> ";
-        int iconW = font.width(icon);
-        g.text(font, icon, textX, y + 5, 0xFFFFFFFF, true);
-        drawScrolling(g, font, s.title(), textX + iconW, y + 5, textW - iconW, 0xFFFFFFFF, true, now, sw);
-
-        // Artiste defilant
-        drawScrolling(g, font, s.artist(), textX, y + 16, textW, 0xFFBBBBBB, false, now, sw);
-
-        double el = s.currentElapsed();
-        g.text(font, fmt(el) + " / " + fmt(s.duration()), textX, y + 27, 0xFF999999, false);
-
-        // barre de progression
-        double ratio = s.duration() > 0 ? Math.min(1.0, el / s.duration()) : 0;
-        int barY = y + h - 6;
-        g.fill(textX, barY, textX + textW, barY + 2, 0x66FFFFFF);
-        g.fill(textX, barY, textX + (int) (textW * ratio), barY + 2, 0xFFE0443C);
+        if (playing) updateCover(mc);
+        HudRenderer.draw(g, font, x, y, size, look, track, status,
+                playing && hasCover, hasCover ? COVER_ID : null,
+                new HudRenderer.Anim(now, marqueeStart, config.scrollSpeed, sw));
     }
 
     /**
-     * Texte qui defile quand il est trop long : pause au debut, defilement vers la gauche
-     * jusqu'a la fin, pause, puis retour au debut. Si le texte tient, il est affiche tel quel.
+     * Texture de la pochette courante (ou null si aucune). Utilisee par l'apercu de l'ecran de config.
+     * A appeler depuis le thread de rendu.
      */
-    private static void drawScrolling(GuiGraphicsExtractor g, Font font, String text, int x, int y,
-                                      int maxW, int color, boolean shadow, long now, int screenW) {
-        if (maxW <= 0) return;
-        int textW = font.width(text);
-        if (textW <= maxW) {
-            g.text(font, text, x, y, color, shadow);
-            return;
-        }
-
-        int overflow = textW - maxW;
-        double speed = Math.max(5, config.scrollSpeed);       // px / s
-        double travel = overflow / speed;
-        double cycle = SCROLL_PAUSE * 2 + travel;
-        double t = ((now - marqueeStart) / 1000.0) % cycle;
-        double offset = t < SCROLL_PAUSE ? 0
-                : t < SCROLL_PAUSE + travel ? (t - SCROLL_PAUSE) * speed
-                : overflow;
-
-        // Zone de decoupe limitee a l'ecran (le HUD peut etre partiellement hors ecran pendant l'animation)
-        int x0 = Math.max(0, x);
-        int x1 = Math.min(screenW, x + maxW);
-        if (x1 <= x0) return;
-        g.enableScissor(x0, Math.max(0, y - 1), x1, y + LINE + 1);
-        g.text(font, text, x - (int) Math.round(offset), y, color, shadow);
-        g.disableScissor();
+    public static Identifier coverTexture() {
+        if (api == null) return null;
+        updateCover(Minecraft.getInstance());
+        return hasCover ? COVER_ID : null;
     }
 
     // ------------------------------------------------------------------
@@ -266,11 +215,6 @@ public class PearHudClient implements ClientModInitializer {
     // ------------------------------------------------------------------
     // Utilitaires
     // ------------------------------------------------------------------
-    private static String fmt(double seconds) {
-        int t = (int) Math.max(0, seconds);
-        return (t / 60) + ":" + String.format("%02d", t % 60);
-    }
-
     private static String statusText(PearApi.Status st) {
         return switch (st) {
             case CONNECTING -> "Connexion...";
@@ -280,13 +224,5 @@ public class PearHudClient implements ClientModInitializer {
             case NO_SONG -> "Aucune musique";
             case OK -> "";
         };
-    }
-
-    private static String fit(Font font, String text, int maxWidth) {
-        if (font.width(text) <= maxWidth) return text;
-        String ell = "...";
-        int end = text.length();
-        while (end > 0 && font.width(text.substring(0, end) + ell) > maxWidth) end--;
-        return text.substring(0, end) + ell;
     }
 }
